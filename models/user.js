@@ -107,7 +107,7 @@ UserSchema.statics.verifyOTP = async function(data){
 		result = await bcrypt.compare(data['otp'], user.otp[0].value);	
 	}else{
 		var err = new Error('OTP expired');
-		Promise.reject(err);
+		return Promise.reject(err);
 	}
 
 	var token = await user.generateAuthToken();
