@@ -103,7 +103,7 @@ UserSchema.statics.verifyOTP = async function(data){
 	var time_difference = (new Date() - user.otp[0].createdAt)/(60*1000);
 	var result = false;
 
-	if(time_difference > 10){
+	if(time_difference <= 10){
 		result = await bcrypt.compare(data['otp'], user.otp[0].value);	
 	}else{
 		var err = new Error('OTP expired');
