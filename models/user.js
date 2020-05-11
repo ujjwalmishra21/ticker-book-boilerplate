@@ -71,70 +71,64 @@ UserSchema.statics.findByMobile = function(data) {
 UserSchema.statics.updateOTPOnDatabase = async function(mobile, otp){
 	var user = this;
 	var createdAt = new Date();
-	var value = 0;
-	bcrypt.genSalt(10, function(err, salt){
-		bcrypt.hash(otp, salt, function(err, hash){
-			value = hash;			
-		});
-	})
 
-	console.log(value);
-	user.findOneAndUpdate({'mobile_number': mobile}, {'otp':[{ value, createdAt}]}, (err,res) => {
+	otp = otp.toString();
+	
+	var salt = await bcrypt.genSalt(10);
+			
+	var value = await bcrypt.hash(otp, salt);
 		
-		return new Promise((resolve, reject) => {
-			if(res)
-				resolve(res);
-			else{
-				reject(new Error("ERROR::" + err.message));
-			}
+	return user.findOneAndUpdate({'mobile_number': mobile}, {'otp':[{ value, createdAt}]}, (err,res) => {
+			console.log("OTP:" + res);
+			return new Promise((resolve, reject) => {
+				if(res)
+					resolve(res);
+				else
+					reject(new Error(err.message));
+						
 		})
-	})
+	})		
+}	
 
-}
 
-UserSchema.statics.verifyOTP = function(mobile, otp){
+UserSchema.statics.verifyOTP = async function(data){
 	var User = this;
 	
-	User.findOne({'mobile_number': mobile}).then(user => {
+	var user = await User.findOne({'mobile_number': data['mobile_number']});
+		
+	if(!user){
+		var err = new Error('User not found');
+		return Promise.reject(err);
+	}
+	var time_difference = (new Date() - user.otp[0].createdAt)/(60*1000);
+	var result = false;
 
-		return new Promise((resolve, reject) => {
-			if(!user){
-				var err = new Error('User not found');
-				reject(err);
+	if(time_difference > 10){
+		result = await bcrypt.compare(data['otp'], user.otp[0].value);	
+	}else{
+		var err = new Error('OTP expired');
+		Promise.reject(err);
+	}
+
+	var token = await user.generateAuthToken();
+	
+	return new Promise((resolve, reject) => {
+		
+		if(result){
+			var resp_data = {
+				token,
+				user
 			}
-			var time_difference = (new Date - user.otp[0].createdAt)/(60*1000);
-			if(time_difference < 10){
-				bcrypt.compare(otp, user.otp[0].value, (err, res) => {
-					if(res)
-						resolve(user);
-					else {
-						var err = new Error('Incorrect OTP');
-						reject(err);
-					}
-				});
-
-			}else{
-				var err = new Error('OTP expired');
-				reject(err);
-			}
-
-		})
+			resolve(resp_data);
+		}else {
+			var err = new Error('Incorrect OTP');
+			reject(err);
+		}
 	})
+	
 }
 
-// UserSchema.pre('save', function(next){
-// 	var user = this;
-// 	bcrypt.genSalt(10, function(err, salt){
-// 		bcrypt.hash(user.otp[0].value, salt, function(err, hash){
-// 			user.otp[0].value = hash;
-// 		});
-// 	});
-	
-// 	next();
-// })
-
 var User = mongoose.model('User', UserSchema);
-
 
 module.exports = {
 	User

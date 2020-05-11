@@ -27,11 +27,12 @@ exports.login = (req, res) => {
     
     User.findByMobile(mobile).then((user) => {
         const otp = Math.round(Math.random()*9000 + 1000);
-        User.updateOTPOnDatabase(user.mobile_number, otp).then(res => {
+        User.updateOTPOnDatabase(user.mobile_number, otp).then(user_updated => {
+            
             client.messages.create({
                 body:'Your OTP for login on SPOTBook is ' + otp,
                 from: '+13343423590',
-                to:'+91' + user.mobile
+                to:'+91' + user_updated.mobile_number
             }).then(message => {
                     var response = {
                         status: 'success',
@@ -68,22 +69,24 @@ exports.login = (req, res) => {
 
 exports.verifyOTP = (req, res) => {
     const body = _.pick(req.body,['otp', 'mobile_number']);
-
-    User.verifyOTP(body.otp, body.mobile_number).then(user => {
-        return user.generateAuthToken().then(token => {
-            var response = {
-                status: 'success',
-                message: 'authentication successful',
-                data: user
-            };
-            res.cookie('x-auth',token).send(response);
-        });
-        
+  
+    User.verifyOTP(body).then(data => {
+        var user_data = {
+            name: data.user.name,
+            mobile_number: data.user.mobile_number
+        }
+        var response = {
+            status: 'success',
+            message: 'authentication successful',
+            data: user_data
+        };
+        res.cookie('x-auth',data.token).send(response);
     }).catch(err => {
         var response = {
             status: 'failure',
             message: err.message
         }
+        res.send(response);
     })
 
 };
