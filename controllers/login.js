@@ -36,7 +36,7 @@ exports.login = (req, res) => {
             }).then(message => {
                     var response = {
                         status: 'success',
-                        message: 'OTP sent'
+                        message: 'OTP sent successfully'
                     };
                     console.log(message.sid);
                     res.send(response);

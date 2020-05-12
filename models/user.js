@@ -20,19 +20,15 @@ var UserSchema = new mongoose.Schema({
 	otp:[{
 		value:{
 			type: String,
-	
 		},
 		createdAt:{
 			type: Date,
-	
 		} 
 	}]
-})
-
+});
 
 UserSchema.methods.generateAuthToken = function() {
 	var user = this;
-	
 	var timestamp = Date.now();
 	var token = jwt.sign({'_id': user._id.toHexString(), timestamp}, process.env.JWT_SECRET).toString();
 
@@ -40,14 +36,13 @@ UserSchema.methods.generateAuthToken = function() {
 };
 
 UserSchema.statics.findByToken = function(token) {
-
 	var user = this;
+	var decoded;
 	try{
-		var decoded = jwt.verify(token, process.env.JWT_SECRET);
+		decoded = jwt.verify(token, process.env.JWT_SECRET)
 	}catch(err){
-		return Promise.reject();
+		return Promise.reject(new Error(err.message));
 	}
-
 	return user.findOne({'_id': decoded._id});
 };
 
@@ -73,14 +68,13 @@ UserSchema.statics.updateOTPOnDatabase = async function(mobile, otp){
 	var createdAt = new Date();
 
 	otp = otp.toString();
-	
 	var salt = await bcrypt.genSalt(10);
-			
 	var value = await bcrypt.hash(otp, salt);
 		
 	return user.findOneAndUpdate({'mobile_number': mobile}, {'otp':[{ value, createdAt}]}, (err,res) => {
 			console.log("OTP:" + res);
 			return new Promise((resolve, reject) => {
+				
 				if(res)
 					resolve(res);
 				else
@@ -125,7 +119,6 @@ UserSchema.statics.verifyOTP = async function(data){
 			reject(err);
 		}
 	})
-	
 }
 
 var User = mongoose.model('User', UserSchema);
