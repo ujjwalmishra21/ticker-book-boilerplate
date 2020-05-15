@@ -1,11 +1,11 @@
-const { User } = require('../models/user');
+const { User } = require('../model/user');
 const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID,process.env.TWILIO_AUTH_TOKEN);
 const _ = require('lodash');
 
 exports.signup = (req, res) => {
-    const user_data = _.pick(req.body, ['name', 'mobile_number']);
+    const user_data = _.pick(req.body, ['name', 'mobile_number','type']);
     
-    var user = new User(user_data);
+    var user = User.build(user_data);
 
     user.save().then(() => {
         var response = {
@@ -24,6 +24,7 @@ exports.signup = (req, res) => {
 
 exports.login = (req, res) => {
     const mobile = _.pick(req.body, ['mobile_number']);
+   
     
     User.findByMobile(mobile).then((user) => {
         const otp = Math.round(Math.random()*9000 + 1000);
@@ -42,7 +43,6 @@ exports.login = (req, res) => {
                     res.send(response);
                 })
                 .catch(err => {
-                    console.log("Error sending otp " + err);
                     var response = {
                         status: 'failure',
                         message: 'Error sending OTP : ' + err.message
