@@ -1,4 +1,4 @@
-const { User } = require('../model/user');
+const { User } = require('../model/index');
 const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID,process.env.TWILIO_AUTH_TOKEN);
 const _ = require('lodash');
 
@@ -24,8 +24,7 @@ exports.signup = (req, res) => {
 
 exports.login = (req, res) => {
     const mobile = _.pick(req.body, ['mobile_number']);
-   
-    
+       
     User.findByMobile(mobile).then((user) => {
         const otp = Math.round(Math.random()*9000 + 1000);
         User.updateOTPOnDatabase(user.mobile_number, otp).then(user_updated => {
@@ -87,7 +86,7 @@ exports.verifyOTP = (req, res) => {
             message: err.message
         }
         res.send(response);
-    })
+    });
 
 };
 
