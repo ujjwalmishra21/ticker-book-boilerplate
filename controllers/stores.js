@@ -4,7 +4,6 @@ const _ = require('lodash');
 exports.addStore = (req, res) => {
     const store_data  = _.pick(req.body, ['store_name','street','locality','landmark','city','state','country','zip','owner_id'])
 
-    console.log(store_data);
     const store = Store.build(store_data);
 
     store.save().then(() => {
@@ -27,28 +26,28 @@ exports.getStores = async (req,res) => {
     const data = _.pick(req.query, ['city','zip','owner_id']);
     
     var stores = [];
-    
-    if(data['owner_id'])
-        stores = await Store.findStores(data);
-    else if(data['zip'])
-        stores = await Store.findStores(data);
-    else if(data['city'])
-        stores = await Store.findStores(data);
-    else
-        stores = await Store.findStores({});
-
     try{
+        if(data['owner_id'])
+            stores = await Store.findStores(data);
+        else if(data['zip'])
+            stores = await Store.findStores(data);
+        else if(data['city'])
+            stores = await Store.findStores(data);
+        else
+            stores = await Store.findStores({});
+
+  
         if(stores.length > 0){
             var response = {
                 status: 'success',
-                message: 'All stores in fetched successfully',
+                message: 'Store data fetched successfully',
                 data: stores
             }
             res.send(response);
         }else{
             var response = {
                 status: 'failure',
-                message: 'No stores found'
+                message: 'No store found'
             }
             res.send(response);
         }

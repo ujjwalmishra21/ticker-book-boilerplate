@@ -36,8 +36,7 @@ User.init({
         type: Sequelize.ENUM('0','1','2'),
         required: true,
         allowNull: false,
-        defaultValue: '1',
-
+        defaultValue: '1'
     },
     otp:{
         type: Sequelize.STRING,
