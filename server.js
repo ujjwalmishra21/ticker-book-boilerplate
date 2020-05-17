@@ -21,9 +21,9 @@ const {authenticate} = require('./middlewares/authenticate');
 server.post('/signup', loginController.signup);
 server.post('/login', loginController.login);
 server.post('/login/verify-otp', loginController.verifyOTP);
-server.get('/', authenticate, homeController.getHome);
-server.post('/addStore', authenticate, storeController.addStore);
-server.get('/getStores', authenticate, storeController.getStores);
+server.get('/', authenticate(['0','1','2']), homeController.getHome);
+server.post('/addStore', authenticate(['0','1']), storeController.addStore);
+server.get('/getStores', authenticate(['0','2']), storeController.getStores);
 
 
 

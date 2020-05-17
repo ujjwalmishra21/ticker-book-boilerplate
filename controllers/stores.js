@@ -23,33 +23,43 @@ exports.addStore = (req, res) => {
 
 }
 
-exports.getStores = (req,res) => {
-    const data = _.pick(req.query, ['city']);
+exports.getStores = async (req,res) => {
+    const data = _.pick(req.query, ['city','zip','owner_id']);
     
- 
-    Store.findStoresByCity(data['city']).then(stores => {
-     
+    var stores = [];
+    
+    if(data['owner_id'])
+        stores = await Store.findStores(data);
+    else if(data['zip'])
+        stores = await Store.findStores(data);
+    else if(data['city'])
+        stores = await Store.findStores(data);
+    else
+        stores = await Store.findStores({});
+
+    try{
         if(stores.length > 0){
             var response = {
                 status: 'success',
-                message: 'All stores in ' + data['city'] + ' fetched successfully',
+                message: 'All stores in fetched successfully',
                 data: stores
             }
             res.send(response);
         }else{
             var response = {
                 status: 'failure',
-                message: 'No stores found in ' + data['city']
+                message: 'No stores found'
             }
             res.send(response);
         }
-    }).catch(err => {
+    }
+    catch(err) {
         var response = {
             status: 'failure',
             message: err.message
         }
         res.send(response);
-    })
+    }
 }
 
 
