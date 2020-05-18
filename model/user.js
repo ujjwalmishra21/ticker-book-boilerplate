@@ -40,25 +40,12 @@ User.init({
     },
     otp:{
         type: Sequelize.STRING,
-        
-    },
-    created_at: {
-        type: Sequelize.DATE,
-        required: true,
-        allowNull: false,
-        defaultValue: Sequelize.NOW
-        
-    },
-    updated_at: {
-        type: Sequelize.DATE,
-        required: true,
-        allowNull: false,
-        defaultValue: Sequelize.NOW
     }
 },{ 
     sequelize,
     modelName:'user',
-    underscored: true
+    underscored: true,
+    timestamps: true
 });
 
 User.findByToken = function(token){

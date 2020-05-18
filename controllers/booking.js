@@ -1,10 +1,14 @@
 const { Booking } = require('../model/index');
+const _ = require('lodash');
 
 exports.createBooking = (req, res) => {
-    const data = _.pick(req.body, ['slot_time', 'store_id', 'customer_id']);
-
+    var data = _.pick(req.body, ['slot_time', 'store_id', 'customer_id']);
+    var slot_time = new Date(data['slot_time']).toISOString();
+       
+    data['slot_time'] = slot_time;
+   
     const booking = Booking.build(data);
-
+    
     booking.save().then(() => {
         var response = {
             status: 'success',
@@ -23,7 +27,7 @@ exports.createBooking = (req, res) => {
 
 exports.getBooking = async (req, res) => {
     const data = _.pick(req.query, ['customer_id', 'owner_id']);
-
+    
     var bookings = [];
     try{
         if(data['customer_id'])
@@ -47,14 +51,14 @@ exports.getBooking = async (req, res) => {
         }
     }
     catch(err) {
+        console.log(err);
         var response = {
             status: 'failure',
             message: err.message
         };
         res.send(response);
     }
-    
-}
+};
 
 
 

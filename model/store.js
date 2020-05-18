@@ -45,24 +45,12 @@ Store.init({
         required: true,
         allowNull: false,
         is: /^[1-9]\d{5}$/g,
-    },
-    created_at: {
-        type: Sequelize.DATE,
-        required: true,
-        allowNull: false,
-        defaultValue: Sequelize.NOW
-        
-    },
-    updated_at: {
-        type: Sequelize.DATE,
-        required: true,
-        allowNull: false,
-        defaultValue: Sequelize.NOW
     }
 },{
     sequelize,
     modelName:'store',
-    underscored:true
+    underscored:true,
+    timestamps: true
 });
 
 Store.findStores = async function(data){

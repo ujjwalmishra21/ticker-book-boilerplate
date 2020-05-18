@@ -1,5 +1,5 @@
 const { Sequelize, sequelize } = require('../db/sequelize');
-const { Op } = sequelize
+const { Op } = require('sequelize');
 const Model = Sequelize.Model;
 
 class Booking extends Model{};
@@ -21,24 +21,12 @@ Booking.init({
         required: true,
         is:/^[01]$/,
         defaultValue: 1
-    },
-    created_at: {
-        type: Sequelize.DATE,
-        required: true,
-        allowNull: false,
-        defaultValue: Sequelize.NOW
-        
-    },
-    updated_at: {
-        type: Sequelize.DATE,
-        required: true,
-        allowNull: false,
-        defaultValue: Sequelize.NOW
     }
-},{
+ },{
     sequelize,
     modelName:'booking',
-    underscored: true
+    underscored: true,
+    timestamps: true
 });
 
 

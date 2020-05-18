@@ -2,7 +2,12 @@ const Sequelize = require('sequelize');
 
 var sequelize = new Sequelize (process.env.DATABASE_NAME,process.env.MYSQL_USERNAME,process.env.MYSQL_PASSWORD, {
     host:process.env.MYSQL_HOST,
-    dialect:'mysql'
+    dialect:'mysql',
+    timezone:'+05:30',
+    define:{
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    }   
 });
 
 

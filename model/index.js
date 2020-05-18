@@ -12,8 +12,6 @@ User.hasMany(Booking, { foreignKey: { name: 'customer_id', allowNull: false}});
 Booking.belongsTo(Store, { foreignKey: { name: 'store_id', allowNull: false}});
 Store.hasMany(Booking, { foreignKey: { name: 'store_id', allowNull: false}});
 
-
-
 //joins
 
 Booking.findCustomerBookingForOwner = async function(data){
@@ -39,16 +37,13 @@ Booking.findCustomerBookingForOwner = async function(data){
                 resolve(result);
             else
                 reject(new Error('No data found'));
-        })
+        });
     }
     catch(err){
         return Promise.reject('Database error:' + err.message);
     }
 
 }
-
-
-
 
 User.sync().then(()=>{
     console.log('users table created successfully');
