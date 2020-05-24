@@ -3,8 +3,8 @@ const { User } = require('../model/user');
 const authenticate = (roles) => {
   
     return (req, res, next)  => {
-        
-        var token = req.cookies['x-auth'];
+       
+        var token = req.headers['x-auth'];
             
         User.findByToken(token).then(user => {
             

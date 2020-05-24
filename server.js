@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-
+const cors = require('cors');
 const server = express();
 
 const PORT = process.env.PORT
@@ -10,6 +10,10 @@ const PORT = process.env.PORT
 server.use(bodyParser.urlencoded({extended:true}));
 server.use(bodyParser.json());
 server.use(cookieParser());
+server.use(cors({
+	exposedHeaders: ['x-auth'],
+	credentials: true
+}))
 
 const homeController = require('./controllers/home');
 const loginController = require('./controllers/login');

@@ -79,7 +79,7 @@ exports.verifyOTP = (req, res) => {
             message: 'authentication successful',
             data: user_data
         };
-        res.cookie('x-auth',data.token).send(response);
+        res.header('x-auth',data.token).send(response);
     }).catch(err => {
         var response = {
             status: 'failure',
