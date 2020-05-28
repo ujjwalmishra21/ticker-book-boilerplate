@@ -2,7 +2,7 @@ const { Store } = require('../model/index');
 const _ = require('lodash');
 
 exports.addStore = (req, res) => {
-    const store_data  = _.pick(req.body, ['store_name','street','locality','landmark','city','state','country','zip','owner_id'])
+    const store_data  = _.pick(req.body, ['store_name','street','locality','landmark','city','state','country','zip','owner_id','open_time','close_time'])
 
     const store = Store.build(store_data);
 
@@ -24,7 +24,7 @@ exports.addStore = (req, res) => {
 
 exports.getStores = async (req,res) => {
     const data = _.pick(req.query, ['city','zip','owner_id']);
-    
+    console.log(data);
     var stores = [];
     try{
         if(data['owner_id'])

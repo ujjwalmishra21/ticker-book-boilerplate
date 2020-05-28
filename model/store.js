@@ -45,6 +45,19 @@ Store.init({
         required: true,
         allowNull: false,
         is: /^[1-9]\d{5}$/g,
+    },
+    open_time:{
+        type: Sequelize.TIME
+    },
+    close_time:{
+        type: Sequelize.TIME
+    },
+    is_active: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        required: true,
+        is:/^[01]$/,
+        defaultValue: 1
     }
 },{
     sequelize,

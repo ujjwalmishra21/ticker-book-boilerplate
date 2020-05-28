@@ -19,6 +19,7 @@ const homeController = require('./controllers/home');
 const loginController = require('./controllers/login');
 const storeController = require('./controllers/stores');
 const bookingController = require('./controllers/booking');
+const slotController = require('./controllers/slot');
 
 const {authenticate} = require('./middlewares/authenticate');
 
@@ -35,6 +36,7 @@ server.get('/getStores', authenticate(['0','2']), storeController.getStores);
 server.post('/createBooking', authenticate(['0','2']), bookingController.createBooking);
 server.get('/getBooking', authenticate(['0','1','2']), bookingController.getBooking);
 
+server.get('/getSlots', authenticate(['0','1','2']), slotController.getSlots);
 
 server.listen(PORT,()=>{
 	console.log(`Server started at ${PORT}`)

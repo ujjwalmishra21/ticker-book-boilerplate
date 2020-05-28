@@ -72,7 +72,9 @@ exports.verifyOTP = (req, res) => {
     User.verifyOTP(body).then(data => {
         var user_data = {
             name: data.user.name,
-            mobile_number: data.user.mobile_number
+            mobile_number: data.user.mobile_number,
+            type: data.user.type,
+            user_id: data.user.user_id
         }
         var response = {
             status: 'success',

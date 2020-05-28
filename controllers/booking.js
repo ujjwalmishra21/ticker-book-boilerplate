@@ -2,10 +2,10 @@ const { Booking } = require('../model/index');
 const _ = require('lodash');
 
 exports.createBooking = (req, res) => {
-    var data = _.pick(req.body, ['slot_time', 'store_id', 'customer_id']);
-    var slot_time = new Date(data['slot_time']).toISOString();
+    var data = _.pick(req.body, ['booking_date', 'store_id', 'customer_id', 'slot_id']);
+    var slot_time = new Date(data['booking_date']).toISOString();
        
-    data['slot_time'] = slot_time;
+    data['booking_date'] = slot_time;
    
     const booking = Booking.build(data);
     
