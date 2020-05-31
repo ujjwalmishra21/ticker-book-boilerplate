@@ -70,11 +70,11 @@ Store.findStores = async function(data){
     var store = this;
     var result;
     if(data['owner_id'])
-        result = await store.findAll({where:{owner_id: data['owner_id']}});
+        result = await store.findAll({where:{owner_id: data['owner_id'], is_active: 1}});
     else if(data['zip'])
-        result = await store.findAll({where:{zip: data['zip']}});
+        result = await store.findAll({where:{zip: data['zip'], is_active: 1}});
     else if(data['city'])
-        result = await store.findAll({where:{city: data['city']}}); 
+        result = await store.findAll({where:{city: data['city'], is_active: 1}}); 
     else 
         result = await store.findAll();
   

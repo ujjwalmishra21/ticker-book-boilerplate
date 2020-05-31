@@ -31,7 +31,7 @@ server.post('/login/verify-otp', loginController.verifyOTP);
 server.get('/', authenticate(['0','1','2']), homeController.getHome);
 
 server.post('/addStore', authenticate(['0','1']), storeController.addStore);
-server.get('/getStores', authenticate(['0','2']), storeController.getStores);
+server.get('/getStores', authenticate(['0','1','2']), storeController.getStores);
 
 server.post('/createBooking', authenticate(['0','2']), bookingController.createBooking);
 server.get('/getBooking', authenticate(['0','1','2']), bookingController.getBooking);

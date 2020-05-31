@@ -2,7 +2,7 @@ const { Store } = require('../model/index');
 const _ = require('lodash');
 
 exports.addStore = (req, res) => {
-    const store_data  = _.pick(req.body, ['store_name','street','locality','landmark','city','state','country','zip','owner_id','open_time','close_time'])
+    const store_data  = _.pick(req.body, ['store_name','street','locality','landmark','city','state','country','zip','owner_id','open_time','close_time','is_active'])
 
     const store = Store.build(store_data);
 
