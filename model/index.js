@@ -42,12 +42,12 @@ Booking.findCustomerBookingForOwner = async function(data){
                     where: {
                         [Op.and]:[
                         { is_active: 1},
-                        { 
-                            [Op.or]: [
-                                    { start_time: { [Op.gte]: start_time_f}},
-                                    { end_time: { [Op.gte]: start_time_f }}
-                                ]
-                        }
+                        // { 
+                        //     [Op.or]: [
+                        //             { start_time: { [Op.gte]: start_time_f}},
+                        //             { end_time: { [Op.gte]: start_time_f }}
+                        //         ]
+                        // }
                     ]
                     }
                 }]
@@ -114,6 +114,8 @@ Booking.findAllCustomerBookings = async function(data){
             },
             include: [{
                 model: Slot
+            },{
+                model: Store
             }]
         });
 

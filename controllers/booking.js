@@ -27,7 +27,7 @@ exports.createBooking = (req, res) => {
 
 exports.getBooking = async (req, res) => {
     const data = _.pick(req.query, ['customer_id', 'owner_id']);
-    
+    console.log(data);
     var bookings = [];
     try{
         if(data['customer_id'])
@@ -44,7 +44,7 @@ exports.getBooking = async (req, res) => {
             res.send(response);
         }else{
             var response = {
-                status: 'failure',
+                status: 'success',
                 message: 'No booking found'
             };
             res.send(response);

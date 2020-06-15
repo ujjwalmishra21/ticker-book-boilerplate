@@ -46,7 +46,7 @@ exports.getStores = async (req,res) => {
             res.send(response);
         }else{
             var response = {
-                status: 'failure',
+                status: 'success',
                 message: 'No store found'
             }
             res.send(response);
