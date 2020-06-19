@@ -50,6 +50,8 @@ Booking.findCustomerBookingForOwner = async function(data){
                         // }
                     ]
                     }
+                },{
+                    model: User
                 }]
             }]
         });
@@ -191,13 +193,6 @@ User.sync().then(()=>{
 }).catch(err=> {
     console.log('users table not created:' + err.message);
 });
-
-
-
-
-
-
-
 
 module.exports = {
     User,
