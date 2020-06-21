@@ -60,6 +60,39 @@ exports.getBooking = async (req, res) => {
     }
 };
 
+exports.getBookingsCountForDate = async (req, res) => {
+    const data = _.pick(req.query, ['booking_date', 'store_id']);
+
+    var booking_count = [];
+    data['booking_date'] = new Date(decodeURIComponent(data['booking_date'])).toISOString();
+    console.log("DATE" + JSON.stringify(data));
+    try{
+        if(data['booking_date'] && data['store_id']){
+            booking_count = await Booking.getBookingsCountForDate(data);
+            var response = {
+                status: 'success',
+                message: 'Bookings count data fetched successfully',
+                data: booking_count
+            };
+            res.send(response);
+        }else{
+            var response = {
+                status: 'success',
+                message: 'No booking count data found',
+                data: []
+            };
+            res.send(response);
+
+        }
+    }catch(err){
+        var response = {
+            status: 'failure',
+            message: err.message
+        }
+        res.send(response);
+    }
+};
+
 
 
 

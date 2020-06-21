@@ -38,6 +38,8 @@ server.get('/getBooking', authenticate(['0','1','2']), bookingController.getBook
 
 server.get('/getSlots', authenticate(['0','1','2']), slotController.getSlots);
 
+server.get('/getBookingsCountForDate', authenticate(['0','1','2']), bookingController.getBookingsCountForDate);
+
 server.listen(PORT,()=>{
 	console.log(`Server started at ${PORT}`)
 })

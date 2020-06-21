@@ -34,6 +34,30 @@ Booking.init({
     timestamps: true
 });
 
+Booking.getBookingsCountForDate = async function (data){
+    var booking = this;
+    var count = await booking.findAll({
+        attributes:['slot_id', [sequelize.fn('count', sequelize.col('booking_id')), 'slot_count']],
+        where:{ store_id: data['store_id'], booking_date: data['booking_date'] },
+        group:["slot_id"]
+    });
+
+    try{
+        return new Promise((resolve, reject) => {
+            if(count)
+                resolve(count);
+            else
+                reject('Count not available');
+            
+        });
+
+    }catch(err){
+        return Promise.reject('Database error:' + err.message);
+    }
+
+}
+
+
 module.exports = {
     Booking
 };
