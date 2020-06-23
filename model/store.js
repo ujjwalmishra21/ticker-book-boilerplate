@@ -66,6 +66,31 @@ Store.init({
     timestamps: true
 });
 
+Store.findStores = async function(data){
+    var store = this;
+    var result;
+    if(data['owner_id'])
+        result = await store.findAll({where:{owner_id: data['owner_id'], is_active: 1}});
+    else if(data['zip'])
+        result = await store.findAll({where:{zip: data['zip'], is_active: 1}});
+    else if(data['city'])
+        result = await store.findAll({where:{city: data['city'], is_active: 1}}); 
+    else 
+        result = await store.findAll();
+  
+    try {
+        return new Promise((resolve, reject) => {
+            if(result)
+                resolve(result);
+            else
+                reject(new Error('Error in fetching data from database'));
+        });
+    }
+    catch(err) {
+        return Promise.reject('Database error:' + err.message);
+    }
+};
+
 module.exports = {
     Store
 };
