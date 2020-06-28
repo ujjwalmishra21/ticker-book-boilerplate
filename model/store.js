@@ -46,6 +46,10 @@ Store.init({
         allowNull: false,
         is: /^[1-9]\d{5}$/g,
     },
+    max_slot_count:{
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
     open_time:{
         type: Sequelize.TIME
     },

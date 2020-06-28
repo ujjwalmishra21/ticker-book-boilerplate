@@ -40,6 +40,10 @@ server.get('/getSlots', authenticate(['0','1','2']), slotController.getSlots);
 
 server.get('/getBookingsCountForDate', authenticate(['0','1','2']), bookingController.getBookingsCountForDate);
 
+server.get('/getQRCode', authenticate(['0','1','2']), bookingController.getQRCode);
+
+server.post('/completeBookingVerification', authenticate(['0','1']), bookingController.completeBookingVerification);
+
 server.listen(PORT,()=>{
 	console.log(`Server started at ${PORT}`)
 })

@@ -35,7 +35,8 @@ Booking.findCustomerBookingForOwner = async function(data){
                     booking_date: {
                         [Op.gte]: start_date.setHours(0,0,0,0)
                     },
-                    is_active: 1
+                    is_active: 1,
+                    is_complete: 0
                 },
                 include: [{
                     model: Slot,
@@ -80,7 +81,8 @@ Booking.findTodayCustomerBookings = async function(data){
                     [Op.between]: [start_date, end_date]    
                 },
                 customer_id: data['customer_id'],
-                is_active: 1
+                is_active: 1,
+                is_complete: 0
             },
             include: [{
                 model: Slot
@@ -113,6 +115,7 @@ Booking.findAllCustomerBookings = async function(data){
                 },
                 customer_id: data['customer_id'],
                 is_active: 1,
+                is_complete:0
             },
             include: [{
                 model: Slot
@@ -148,7 +151,8 @@ Booking.findStoreBookings = async function(data){
                     [Op.gte]: start_date  
                 },
                 store_id: data['store_id'],
-                is_active: 1               
+                is_active: 1,
+                is_complete: 0               
             },
             include: [{
                 model: Slot
