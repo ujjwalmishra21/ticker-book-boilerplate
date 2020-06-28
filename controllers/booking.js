@@ -16,7 +16,7 @@ exports.createBooking = async (req, res) => {
     };
     try{
         var slot_info = await Booking.getBookingsCountForSlot(count_object);
-     
+        
         if(slot_info.dataValues['slot_count'] < data['max_slot_count']){
             
             var booking_code = Math.random().toString(36).substr(2);
